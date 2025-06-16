@@ -33,7 +33,7 @@ services:
 
   # 🟩 User Service
   user-service:
-    build: ./app-tier/user-service
+    build: ./apptier/user-service
     ports:
       - "8081:8081"
     environment:
@@ -45,7 +45,7 @@ services:
 
   # 🟩 Order Service
   order-service:
-    build: ./app-tier/order-service
+    build: ./apptier/orderservice
     ports:
       - "8082:8082"
     environment:
@@ -57,7 +57,7 @@ services:
 
   # 🟩 Payment Service
   payment-service:
-    build: ./app-tier/payment-service
+    build: ./apptier/paymentservice
     ports:
       - "8083:8083"
     environment:
@@ -69,7 +69,7 @@ services:
 
   # 🟥 Frontend (React)
   frontend:
-    build: ./web-tier/frontend
+    build: ./webtier/front-end
     ports:
       - "3000:3000"
     depends_on:
