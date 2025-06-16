@@ -1,0 +1,78 @@
+version: "3.8"
+
+services:
+  # 🟦 User DB
+  user-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  # 🟦 Order DB
+  order-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: order
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+
+  # 🟦 Payment DB
+  payment-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: paymentdb
+      POSTGRES_USER: payment
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+
+  # 🟩 User Service
+  user-service:
+    build: ./app-tier/user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/userdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - user-db
+
+  # 🟩 Order Service
+  order-service:
+    build: ./app-tier/order-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://order-db:5432/orderdb
+      SPRING_DATASOURCE_USERNAME: order
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - order-db
+
+  # 🟩 Payment Service
+  payment-service:
+    build: ./app-tier/payment-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://payment-db:5432/paymentdb
+      SPRING_DATASOURCE_USERNAME: payment
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - payment-db
+
+  # 🟥 Frontend (React)
+  frontend:
+    build: ./web-tier/frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+      - order-service
+      - payment-service
