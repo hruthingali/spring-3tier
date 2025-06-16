@@ -2,7 +2,7 @@
 FROM openjdk:17
 
 # Copy the built JAR into the image
-COPY target/payment-service-0.0.1-SNAPSHOT.jar paymentservice.jar
+COPY target/paymentservice-0.0.1-SNAPSHOT.jar paymentservice.jar
 
 # Run the JAR file
 ENTRYPOINT ["java", "-jar", "/paymentservice.jar"]
